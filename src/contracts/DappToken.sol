@@ -30,9 +30,14 @@ contract DappToken {
     }
     // ユーザーがトークンを別のアカウントに送信できるようにする機能を実装
     function transfer(address _to, uint256 _value) public returns (bool success) {
+        // 移動したい額のトークンがユーザーのアドレスに存在するか確認
+        // 存在しない場合は、エラーを返す
         require(balanceOf[msg.sender] >= _value);
+        // 関数を呼び出したユーザーアドレスから _value の金額を引き抜く
         balanceOf[msg.sender] -= _value;
+        // 送金先のアドレスに _value の金額を足す
         balanceOf[_to] += _value;
+        // Transferイベントを実行する
         emit Transfer(msg.sender, _to, _value);
         return true;
     }
